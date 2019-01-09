@@ -1,6 +1,5 @@
 import numpy as np
-import pygame
-import sys
+import pygame, sys
 import math
 from pygame.locals import *
 
@@ -114,10 +113,12 @@ myfont = pygame.font.SysFont("monospace",75)
 
 while not game_over:
     for event in pygame.event.get():
-        if event.type == pygame.QUIT:
+ #       if event.type == pygame.QUIT:
+        if event.type == QUIT:
+
             pygame.quit()
             sys.exit()
-        
+  
         if event.type == pygame.MOUSEMOTION:
             pygame.draw.rect(screen, COLOUR_BACKGROUND, (0,0,width, SQUARESIZE))
             posx = event.pos[0]
