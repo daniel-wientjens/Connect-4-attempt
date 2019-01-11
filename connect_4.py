@@ -14,7 +14,7 @@ COLOUR_PLAYER2 = (255,255,0)
 
 ROW_COUNT = 6
 COLUMN_COUNT = 7
-CONNECT_COUNT = 4
+CONNECT_COUNT = 3
 
 
 def create_board():
@@ -39,7 +39,7 @@ def print_board(board):
     
 def winning_move(board, piece):
     #Checking all horizontal locations
-    for c in range(COLUMN_COUNT-3):
+    for c in range(COLUMN_COUNT-CONNECT_COUNT+1):
         for r in range(ROW_COUNT):
             check = False
             for i in range(CONNECT_COUNT):
@@ -50,7 +50,7 @@ def winning_move(board, piece):
                 return True
     #Checking all verical locations        
     for c in range(COLUMN_COUNT):
-        for r in range(ROW_COUNT-3):
+        for r in range(ROW_COUNT-CONNECT_COUNT+1):
             check = False
             for i in range(CONNECT_COUNT):
                 if not board[r+i][c]==piece:
@@ -59,8 +59,8 @@ def winning_move(board, piece):
             if check==False:
                 return True
     #Checking all positive sloping diagonal locations
-    for c in range(COLUMN_COUNT-3):
-        for r in range(ROW_COUNT-3):
+    for c in range(COLUMN_COUNT-CONNECT_COUNT+1):
+        for r in range(ROW_COUNT-CONNECT_COUNT+1):
             check = False
             for i in range(CONNECT_COUNT):
                 if not board[r+i][c+i]==piece:
@@ -69,8 +69,8 @@ def winning_move(board, piece):
             if check==False:
                 return True
     #Checking all negative sloping diagonal locations
-    for c in range(COLUMN_COUNT-3):
-        for r in range(3, ROW_COUNT):
+    for c in range(COLUMN_COUNT-CONNECT_COUNT+1):
+        for r in range(CONNECT_COUNT-1, ROW_COUNT):
             check = False
             for i in range(CONNECT_COUNT):
                 if not board[r-i][c+i]==piece:
@@ -113,7 +113,6 @@ myfont = pygame.font.SysFont("monospace",75)
 
 while not game_over:
     for event in pygame.event.get():
- #       if event.type == pygame.QUIT:
         if event.type == QUIT:
 
             pygame.quit()
@@ -157,6 +156,7 @@ while not game_over:
                     if winning_move(board,2):
                         print("winning so far")
                         label = myfont.render("Player 2 wins! Congrats",1,COLOUR_PLAYER2)
+                        print("winning so far!!!")
                         screen.blit(label,(40,10))
                         game_over = True
 
