@@ -178,7 +178,8 @@ def game_loop():
                             screen.blit(label, (40,10))
                             game_over = True
                             pygame.time.delay(10)
-                            quitgame()
+                            winner = "1"
+                            #quitgame()
 
 
                 # # Ask for Player 2 Input
@@ -195,7 +196,8 @@ def game_loop():
                             screen.blit(label, (40,10))
                             game_over = True
                             pygame.time.delay(10)
-                            quitgame()
+                            winner = "2"
+                            #quitgame()
 
 
                 print_board(board)
@@ -205,11 +207,30 @@ def game_loop():
                 turn += 1
                 turn = turn % 2
 
-                if game_over:
-                    pygame.time.wait(3000)
+                #if game_over:
+                #    pygame.time.wait(3000)
 #def game_win():
+def game_win():
+
+    intro = True
+
+    while intro:
+        for event in pygame.event.get():
+            #print(event)
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+        #gameDisplay = pygame.display.set_mode(size)        
+        screen.fill(WHITE)
+        largeText = pygame.font.SysFont('comicsansms',50)
+        textSurf, textRect = text_objects("The winner is", myfont)
+        textRect.center = ((size[0]/2),(size[1]/2))
+        screen.blit(textSurf, textRect)
+
+        pygame.display.update()
+        clock.tick(15)
 
 game_intro()
 game_loop()
-#game_win()
+game_win()
 quitgame()
