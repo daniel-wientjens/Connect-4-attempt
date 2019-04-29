@@ -177,6 +177,8 @@ def game_loop():
                             label = myfont.render("Player 1 wins!!", 1, RED)
                             screen.blit(label, (40,10))
                             game_over = True
+                            pygame.time.delay(10)
+                            quitgame()
 
 
                 # # Ask for Player 2 Input
@@ -192,6 +194,8 @@ def game_loop():
                             label = myfont.render("Player 2 wins!!", 1, YELLOW)
                             screen.blit(label, (40,10))
                             game_over = True
+                            pygame.time.delay(10)
+                            quitgame()
 
 
                 print_board(board)
