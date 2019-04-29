@@ -13,7 +13,7 @@ WHITE = (255,255,255)
 DARK_RED = (200,0,0)
 DARK_GREEN = (0,200,0)
 
-ROW_COUNT = 6
+ROW_COUNT = 6 
 COLUMN_COUNT = 7
 clock = pygame.time.Clock()
 
@@ -96,6 +96,26 @@ screen = pygame.display.set_mode(size)
 draw_board(board)
 myfont = pygame.font.SysFont("monospace", 50)
 
+def button(msg,x,y,w,h,ic,ac,action=None):
+    mouse = pygame.mouse.get_pos()
+    #print(mouse)
+    click = pygame.mouse.get_pressed()
+    #print(click)
+    if x+w > mouse[0] > x and y+h > mouse[1] > y:
+        pygame.draw.rect(screen, ac,(x,y,w,h))
+        if click[0]==1 and action !=None:
+            action()
+    else:
+        pygame.draw.rect(screen, ic,(x,y,w,h))
+    smallText = pygame.font.Font("freesansbold.ttf",20)
+    textSurf, textRect = text_objects(msg, smallText)
+    textRect.center = ( (x+(w/2)), (y+(h/2)) )
+    screen.blit(textSurf, textRect)
+
+def quitgame():
+    pygame.quit()
+    quit()
+
 def game_intro():
 
     intro = True
@@ -109,25 +129,17 @@ def game_intro():
         #gameDisplay = pygame.display.set_mode(size)        
         screen.fill(WHITE)
         largeText = pygame.font.SysFont('comicsansms',50)
-        TextSurf, TextRect = text_objects("Welcome to Connect 4", myfont)
-        TextRect.center = ((size[0]/2),(size[1]/2))
-        screen.blit(TextSurf, TextRect)
-        mouse = pygame.mouse.get_pos()
-        if 300 > mouse[0] > 200 and 600 > mouse[1] > 550:
-        	pygame.draw.rect(screen, DARK_GREEN,(200,550,100,50))
-        	pygame.draw.rect(screen, RED,(400,550,100,50))
-        elif 500>mouse[0]>400 and 600>mouse[1]>550:
-        	pygame.draw.rect(screen, GREEN,(200,550,100,50))
-        	pygame.draw.rect(screen, DARK_RED,(400,550,100,50))
-        else: 
-        	pygame.draw.rect(screen, GREEN,(200,550,100,50))
-        	pygame.draw.rect(screen, RED,(400,550,100,50))
-
+        textSurf, textRect = text_objects("Welcome to Connect 4", myfont)
+        textRect.center = ((size[0]/2),(size[1]/2))
+        screen.blit(textSurf, textRect)
+        button("Play",200,550,100,50,GREEN,DARK_GREEN,game_loop)
+        button("Quit",400,550,100,50,RED,DARK_RED,quitgame)
 
         pygame.display.update()
         clock.tick(15)
 
 def game_loop():
+    draw_board(board)
     game_over = False
     turn = 0
     pygame.display.update()
@@ -196,5 +208,4 @@ def game_loop():
 game_intro()
 game_loop()
 #game_win()
-pygame.quit()
-quit()
+quitgame()
