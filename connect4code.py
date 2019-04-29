@@ -6,6 +6,7 @@ import math
 BLUE = (0,0,255)
 BLACK = (0,0,0)
 RED = (255,0,0)
+GREEN = (0,255,0)
 YELLOW = (255,255,0)
 WHITE = (255,255,255)
 
@@ -90,7 +91,7 @@ RADIUS = int(SQUARESIZE/2 - 5)
 
 screen = pygame.display.set_mode(size)
 draw_board(board)
-
+myfont = pygame.font.SysFont("monospace", 50)
 
 def game_intro():
 
@@ -102,12 +103,17 @@ def game_intro():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
-        gameDisplay = pygame.display.set_mode((800,600))        
-        gameDisplay.fill(WHITE)
+        #gameDisplay = pygame.display.set_mode(size)        
+        screen.fill(WHITE)
         largeText = pygame.font.SysFont('comicsansms',50)
-        TextSurf, TextRect = text_objects("Welcome to Connect 4", largeText)
-        TextRect.center = ((800/2),(600/2))
-        gameDisplay.blit(TextSurf, TextRect)
+        TextSurf, TextRect = text_objects("Welcome to Connect 4", myfont)
+        TextRect.center = ((size[0]/2),(size[1]/2))
+        screen.blit(TextSurf, TextRect)
+
+        pygame.draw.rect(screen, GREEN,(200,555,100,50))
+        pygame.draw.rect(screen, RED,(400,555,100,50))
+
+
         pygame.display.update()
         clock.tick(15)
 
@@ -116,7 +122,7 @@ def game_loop():
     turn = 0
     pygame.display.update()
 
-    myfont = pygame.font.SysFont("monospace", 75)
+    
 
     while not game_over:
 
@@ -175,7 +181,10 @@ def game_loop():
 
                 if game_over:
                     pygame.time.wait(3000)
+#def game_win():
+
 game_intro()
 game_loop()
+#game_win()
 pygame.quit()
 quit()
