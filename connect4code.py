@@ -10,6 +10,9 @@ GREEN = (0,255,0)
 YELLOW = (255,255,0)
 WHITE = (255,255,255)
 
+DARK_RED = (200,0,0)
+DARK_GREEN = (0,200,0)
+
 ROW_COUNT = 6
 COLUMN_COUNT = 7
 clock = pygame.time.Clock()
@@ -109,9 +112,16 @@ def game_intro():
         TextSurf, TextRect = text_objects("Welcome to Connect 4", myfont)
         TextRect.center = ((size[0]/2),(size[1]/2))
         screen.blit(TextSurf, TextRect)
-
-        pygame.draw.rect(screen, GREEN,(200,555,100,50))
-        pygame.draw.rect(screen, RED,(400,555,100,50))
+        mouse = pygame.mouse.get_pos()
+        if 300 > mouse[0] > 200 and 600 > mouse[1] > 550:
+        	pygame.draw.rect(screen, DARK_GREEN,(200,550,100,50))
+        	pygame.draw.rect(screen, RED,(400,550,100,50))
+        elif 500>mouse[0]>400 and 600>mouse[1]>550:
+        	pygame.draw.rect(screen, GREEN,(200,550,100,50))
+        	pygame.draw.rect(screen, DARK_RED,(400,550,100,50))
+        else: 
+        	pygame.draw.rect(screen, GREEN,(200,550,100,50))
+        	pygame.draw.rect(screen, RED,(400,550,100,50))
 
 
         pygame.display.update()
