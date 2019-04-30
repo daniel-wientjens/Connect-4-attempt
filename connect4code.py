@@ -15,8 +15,8 @@ DARK_GREEN = (0,200,0)
 
 ROW_COUNT = 6 
 COLUMN_COUNT = 7
+CONNECT_COUNT = 4
 clock = pygame.time.Clock()
-
 
 def create_board():
 	board = np.zeros((ROW_COUNT,COLUMN_COUNT))
@@ -39,30 +39,72 @@ def text_objects(text, font):
 def print_board(board):
 	print(np.flip(board, 0))
 
+# def winning_move(board, piece):
+# 	# Check horizontal locations for win
+# 	for c in range(COLUMN_COUNT-3):
+# 		for r in range(ROW_COUNT):
+# 			if board[r][c] == piece and board[r][c+1] == piece and board[r][c+2] == piece and board[r][c+3] == piece:
+# 				return True
+
+# 	# Check vertical locations for win
+# 	for c in range(COLUMN_COUNT):
+# 		for r in range(ROW_COUNT-3):
+# 			if board[r][c] == piece and board[r+1][c] == piece and board[r+2][c] == piece and board[r+3][c] == piece:
+# 				return True
+
+# 	# Check positively sloped diaganols
+# 	for c in range(COLUMN_COUNT-3):
+# 		for r in range(ROW_COUNT-3):
+# 			if board[r][c] == piece and board[r+1][c+1] == piece and board[r+2][c+2] == piece and board[r+3][c+3] == piece:
+# 				return True
+
+# 	# Check negatively sloped diaganols
+# 	for c in range(COLUMN_COUNT-3):
+# 		for r in range(3, ROW_COUNT):
+# 			if board[r][c] == piece and board[r-1][c+1] == piece and board[r-2][c+2] == piece and board[r-3][c+3] == piece:
+# 				return True
+
 def winning_move(board, piece):
-	# Check horizontal locations for win
-	for c in range(COLUMN_COUNT-3):
-		for r in range(ROW_COUNT):
-			if board[r][c] == piece and board[r][c+1] == piece and board[r][c+2] == piece and board[r][c+3] == piece:
-				return True
-
-	# Check vertical locations for win
-	for c in range(COLUMN_COUNT):
-		for r in range(ROW_COUNT-3):
-			if board[r][c] == piece and board[r+1][c] == piece and board[r+2][c] == piece and board[r+3][c] == piece:
-				return True
-
-	# Check positively sloped diaganols
-	for c in range(COLUMN_COUNT-3):
-		for r in range(ROW_COUNT-3):
-			if board[r][c] == piece and board[r+1][c+1] == piece and board[r+2][c+2] == piece and board[r+3][c+3] == piece:
-				return True
-
-	# Check negatively sloped diaganols
-	for c in range(COLUMN_COUNT-3):
-		for r in range(3, ROW_COUNT):
-			if board[r][c] == piece and board[r-1][c+1] == piece and board[r-2][c+2] == piece and board[r-3][c+3] == piece:
-				return True
+    #Checking all horizontal locations
+    for c in range(COLUMN_COUNT-CONNECT_COUNT+1):
+        for r in range(ROW_COUNT):
+            check = False
+            for i in range(CONNECT_COUNT):
+                if not board[r][c+i]==piece:
+                    check = True
+                    break
+            if check==False:
+                return True
+    #Checking all verical locations        
+    for c in range(COLUMN_COUNT):
+        for r in range(ROW_COUNT-CONNECT_COUNT+1):
+            check = False
+            for i in range(CONNECT_COUNT):
+                if not board[r+i][c]==piece:
+                    check = True
+                    break
+            if check==False:
+                return True
+    #Checking all positive sloping diagonal locations
+    for c in range(COLUMN_COUNT-CONNECT_COUNT+1):
+        for r in range(ROW_COUNT-CONNECT_COUNT+1):
+            check = False
+            for i in range(CONNECT_COUNT):
+                if not board[r+i][c+i]==piece:
+                    check = True
+                    break
+            if check==False:
+                return True
+    #Checking all negative sloping diagonal locations
+    for c in range(COLUMN_COUNT-CONNECT_COUNT+1):
+        for r in range(CONNECT_COUNT-1, ROW_COUNT):
+            check = False
+            for i in range(CONNECT_COUNT):
+                if not board[r-i][c+i]==piece:
+                    check = True
+                    break
+            if check==False:
+                return True
 
 def draw_board(board):
 	for c in range(COLUMN_COUNT):
@@ -97,6 +139,7 @@ def quitgame():
     quit()
 
 def game_intro():
+    pygame.mixer.music.play(-1)
     create_board()
     intro = True
 
@@ -131,12 +174,14 @@ def game_win(winner):
         screen.blit(textSurf, textRect)
         button("Quit",400,550,100,50,RED,DARK_RED,quitgame)
         button("Play Again",200,550,100,50,GREEN,DARK_GREEN,game_loop)
+#        pygame.mixer.music.stop()
         pygame.display.update()
         clock.tick(15)
 
         #game_intro()
 
 def game_loop():
+    pygame.mixer.music.play(-1)
     board = create_board()
     draw_board(board)
     game_over = False
@@ -170,8 +215,6 @@ def game_loop():
                         drop_piece(board, row, col, 1)
 
                         if winning_move(board, 1):
-                            label = myfont.render("Player 1 wins!!", 1, RED)
-                            screen.blit(label, (40,10))
                             game_over = True
                             pygame.time.delay(10)
                             winner = "1"
@@ -188,8 +231,6 @@ def game_loop():
                         drop_piece(board, row, col, 2)
 
                         if winning_move(board, 2):
-                            label = myfont.render("Player 2 wins!!", 1, YELLOW)
-                            screen.blit(label, (40,10))
                             game_over = True
                             pygame.time.delay(10)
                             winner = "2"
@@ -207,6 +248,7 @@ def game_loop():
 board = create_board()
 print_board(board)
 pygame.init()
+pygame.mixer.music.load("background_music.wav")
 SQUARESIZE = 100
 width = COLUMN_COUNT * SQUARESIZE
 height = (ROW_COUNT+1) * SQUARESIZE
