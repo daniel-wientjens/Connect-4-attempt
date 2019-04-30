@@ -39,31 +39,6 @@ def text_objects(text, font):
 def print_board(board):
 	print(np.flip(board, 0))
 
-# def winning_move(board, piece):
-# 	# Check horizontal locations for win
-# 	for c in range(COLUMN_COUNT-3):
-# 		for r in range(ROW_COUNT):
-# 			if board[r][c] == piece and board[r][c+1] == piece and board[r][c+2] == piece and board[r][c+3] == piece:
-# 				return True
-
-# 	# Check vertical locations for win
-# 	for c in range(COLUMN_COUNT):
-# 		for r in range(ROW_COUNT-3):
-# 			if board[r][c] == piece and board[r+1][c] == piece and board[r+2][c] == piece and board[r+3][c] == piece:
-# 				return True
-
-# 	# Check positively sloped diaganols
-# 	for c in range(COLUMN_COUNT-3):
-# 		for r in range(ROW_COUNT-3):
-# 			if board[r][c] == piece and board[r+1][c+1] == piece and board[r+2][c+2] == piece and board[r+3][c+3] == piece:
-# 				return True
-
-# 	# Check negatively sloped diaganols
-# 	for c in range(COLUMN_COUNT-3):
-# 		for r in range(3, ROW_COUNT):
-# 			if board[r][c] == piece and board[r-1][c+1] == piece and board[r-2][c+2] == piece and board[r-3][c+3] == piece:
-# 				return True
-
 def winning_move(board, piece):
     #Checking all horizontal locations
     for c in range(COLUMN_COUNT-CONNECT_COUNT+1):
@@ -145,7 +120,6 @@ def game_intro():
 
     while intro:
         for event in pygame.event.get():
-            #print(event)
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
@@ -160,9 +134,7 @@ def game_intro():
         clock.tick(15)
 
 def game_win(winner):
-    print("game win1")
     intro = True
-
     while intro:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -174,11 +146,8 @@ def game_win(winner):
         screen.blit(textSurf, textRect)
         button("Quit",400,550,100,50,RED,DARK_RED,quitgame)
         button("Play Again",200,550,100,50,GREEN,DARK_GREEN,game_loop)
-#        pygame.mixer.music.stop()
         pygame.display.update()
         clock.tick(15)
-
-        #game_intro()
 
 def game_loop():
     pygame.mixer.music.play(-1)
