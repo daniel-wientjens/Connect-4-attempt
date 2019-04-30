@@ -78,29 +78,9 @@ def draw_board(board):
 				pygame.draw.circle(screen, YELLOW, (int(c*SQUARESIZE+SQUARESIZE/2), height-int(r*SQUARESIZE+SQUARESIZE/2)), RADIUS)
 	pygame.display.update()
 
-
-board = create_board()
-print_board(board)
-
-pygame.init()
-
-SQUARESIZE = 100
-
-width = COLUMN_COUNT * SQUARESIZE
-height = (ROW_COUNT+1) * SQUARESIZE
-
-size = (width, height)
-RADIUS = int(SQUARESIZE/2 - 5)
-
-screen = pygame.display.set_mode(size)
-draw_board(board)
-myfont = pygame.font.SysFont("monospace", 50)
-
 def button(msg,x,y,w,h,ic,ac,action=None):
     mouse = pygame.mouse.get_pos()
-    #print(mouse)
     click = pygame.mouse.get_pressed()
-    #print(click)
     if x+w > mouse[0] > x and y+h > mouse[1] > y:
         pygame.draw.rect(screen, ac,(x,y,w,h))
         if click[0]==1 and action !=None:
@@ -117,7 +97,7 @@ def quitgame():
     quit()
 
 def game_intro():
-
+    create_board()
     intro = True
 
     while intro:
@@ -126,9 +106,7 @@ def game_intro():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
-        #gameDisplay = pygame.display.set_mode(size)        
         screen.fill(WHITE)
-        largeText = pygame.font.SysFont('comicsansms',50)
         textSurf, textRect = text_objects("Welcome to Connect 4", myfont)
         textRect.center = ((size[0]/2),(size[1]/2))
         screen.blit(textSurf, textRect)
@@ -138,13 +116,32 @@ def game_intro():
         pygame.display.update()
         clock.tick(15)
 
+def game_win(winner):
+    print("game win1")
+    intro = True
+
+    while intro:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+        screen.fill(WHITE)
+        textSurf, textRect = text_objects(("The winner is Player " + winner), myfont)
+        textRect.center = ((size[0]/2),(size[1]/2))
+        screen.blit(textSurf, textRect)
+        button("Quit",400,550,100,50,RED,DARK_RED,quitgame)
+        button("Play Again",200,550,100,50,GREEN,DARK_GREEN,game_loop)
+        pygame.display.update()
+        clock.tick(15)
+
+        #game_intro()
+
 def game_loop():
+    board = create_board()
     draw_board(board)
     game_over = False
     turn = 0
     pygame.display.update()
-
-    
 
     while not game_over:
 
@@ -163,7 +160,6 @@ def game_loop():
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 pygame.draw.rect(screen, BLACK, (0,0, width, SQUARESIZE))
-                #print(event.pos)
                 # Ask for Player 1 Input
                 if turn == 0:
                     posx = event.pos[0]
@@ -206,31 +202,25 @@ def game_loop():
 
                 turn += 1
                 turn = turn % 2
+    game_win(winner)
 
-                #if game_over:
-                #    pygame.time.wait(3000)
-#def game_win():
-def game_win():
+board = create_board()
+print_board(board)
+pygame.init()
+SQUARESIZE = 100
+width = COLUMN_COUNT * SQUARESIZE
+height = (ROW_COUNT+1) * SQUARESIZE
+size = (width, height)
+RADIUS = int(SQUARESIZE/2 - 5)
+screen = pygame.display.set_mode(size)
+draw_board(board)
+myfont = pygame.font.SysFont("monospace", 50)
 
-    intro = True
-
-    while intro:
-        for event in pygame.event.get():
-            #print(event)
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                quit()
-        #gameDisplay = pygame.display.set_mode(size)        
-        screen.fill(WHITE)
-        largeText = pygame.font.SysFont('comicsansms',50)
-        textSurf, textRect = text_objects("The winner is", myfont)
-        textRect.center = ((size[0]/2),(size[1]/2))
-        screen.blit(textSurf, textRect)
-
-        pygame.display.update()
-        clock.tick(15)
 
 game_intro()
+print("intro")
 game_loop()
+print("gameloop")
 game_win()
+print("game win")
 quitgame()
